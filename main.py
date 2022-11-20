@@ -1,10 +1,10 @@
-from substitution_cipher import substitution_encode, substitution_decode
-from affinean_cipher import affinean_encode, affinean_decode, affinean_bruteforce
+from substitution_cipher import substitution_encode, substitution_decode, substitution_freq_analysis
+from affinean_cipher import affinean_encode, affinean_decode, affinean_freq_analysis, affinean_recurrent_freq
 
 
 def main():
-    mode = int(input('Выберите режим работы \n1) Подстановка \n2) Афинный шифр\n3) Афинный рекуррентный шифр\n'))
-    option = int(input('1) Зашифрование \n2) Дешифрование \n3) Криптоанализ\n'))
+    mode = int(input('Выберите режим работы\n1) Шифр простой замены\n2) Афинный шифр\n3) Афинный рекуррентный шифр\n'))
+    option = int(input('1) Зашифрование \n2) Расшифрование \n3) Криптоанализ\n'))
     f = open('input.txt', 'r')
     text = f.read()
     new_text = ''
@@ -15,6 +15,9 @@ def main():
         elif option == 2:
             key = input('Введите ключ: ')
             new_text = substitution_decode(text, key)
+        elif option == 3:
+            key = substitution_freq_analysis(text)
+            print(f'Предположительный ключ: {key}')
 
     elif mode == 2:
         if option == 1:
@@ -25,7 +28,7 @@ def main():
             b = input('b: ')
             new_text = affinean_decode(text, (a, b))
         else:
-            key = affinean_bruteforce(text)
+            key = affinean_freq_analysis(text)
             print(f'Предположительный ключ: a = {key[0]}, b = {key[1]}')
 
     elif mode == 3:
